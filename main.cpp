@@ -24,60 +24,35 @@
 #include <locale>
 using namespace std;
 
-map<char, int> readFile(string fileName);
+map<wchar_t, int> readFile(string fileName);
 
-map<char, int> readFile(string fileName) {
-  map<char, int> characterFrequencyCounter;
-  ifstream fileRead;
-
-  fileRead.open(fileName);
-
-  if (fileRead.is_open()) {
-    char fileCharacter;
-    while (!fileRead.eof()) {
-      fileRead.get(fileCharacter);
-      if (characterFrequencyCounter.count(fileCharacter) != 0) {
-        characterFrequencyCounter.at(fileCharacter) += 1; 
-      }
-      else {
-        characterFrequencyCounter.insert(pair<char, int>(fileCharacter, 1));
-      }
-    }
-  } 
-
-  return characterFrequencyCounter;
-}
-
-map<wchar_t, int> readFile2(string fileName) {
-  wifstream wif(fileName);
-  wif.imbue(locale("zh_CN.UTF-8"));
+map<wchar_t, int> readFile(string fileName) {
+  wifstream fileRead;
+  fileRead.imbue(locale("zh_CN.UTF-8"));
   map<wchar_t, int> characterFrequencyCounter;
 
   wchar_t fileCharacter;
-  while (!wif.eof()) {
-    wif.get(fileCharacter);
-    if (characterFrequencyCounter.count(fileCharacter) != 0) {
-      characterFrequencyCounter.at(fileCharacter) += 1;
-    }
-    else {
-      characterFrequencyCounter.insert(pair<wchar_t, int>(fileCharacter, 1));
+
+  fileRead.open(fileName);
+  if (fileRead.is_open()) {
+    while (!fileRead.eof()) {
+      fileRead.get(fileCharacter);
+      if (fileRead.gcount() < 1) break;
+      if (characterFrequencyCounter.count(fileCharacter) != 0) {
+        characterFrequencyCounter.at(fileCharacter) += 1;
+      }
+      else {
+        characterFrequencyCounter.insert(pair<wchar_t, int>(fileCharacter, 1));
+      }
     }
   }
-  // wcout.imbue(locale("zh_CN.UTF-8"));
-  // wcout << wif.rdbuf();
   return characterFrequencyCounter;
 }
 
 int main() {
-  map<char, int> characterFrequencyCounter = readFile("Pride_and_Prejudice.txt");
-
-  // for (auto const &pair : characterFrequencyCounter) {
-  //   cout << pair.first << " " << pair.second << endl;
-  // }
-
-  map<wchar_t, int> characterFrequencyCounter2 = readFile2("Pride_and_Prejudice.txt");
+  map<wchar_t, int> characterFrequencyCounter = readFile("Pride_and_Prejudice.txt");
   wcout.imbue(locale("zh_CN.UTF-8"));
-  for (auto const &pair : characterFrequencyCounter2) {
+  for (auto const &pair : characterFrequencyCounter) {
     wcout << pair.first << " " << pair.second << endl;
   }
 }

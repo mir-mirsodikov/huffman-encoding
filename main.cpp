@@ -54,17 +54,4 @@ map<wchar_t, int> readFile(string fileName) {
 int main() {
   map<wchar_t, int> characterFrequencyCounter = readFile("Pride_and_Prejudice.txt");
   wcout.imbue(locale("zh_CN.UTF-8"));
-  // for (auto const &pair : characterFrequencyCounter) {
-  //   wcout << pair.first << " " << pair.second << endl;
-  // }
-
-  HuffmanTree myTree;
-
-  myTree.insert('a', 5);
-  myTree.insert('b', 1);
-  myTree.insert('T', 45);
-  myTree.insert('y', 7);
-  myTree.insert('/', 2);
-  
-  myTree.preOrder();
 }

@@ -4,7 +4,7 @@
 class HuffmanTree {
 private:
   HuffmanTreeNode* _root;  
-  void insert(HuffmanTreeNode* node, char character, int frequency);
+  HuffmanTreeNode* insert(HuffmanTreeNode* node, char character, int frequency);
   void preOrder(const HuffmanTreeNode* node);
 public:
   HuffmanTree();

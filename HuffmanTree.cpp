@@ -4,34 +4,21 @@
 HuffmanTree::HuffmanTree() : _root{ nullptr } {}
 
 void HuffmanTree::insert(char character, int frequency) {
-  insert(_root, character, frequency);
+  _root = insert(_root, character, frequency);
 }
 
-void HuffmanTree::insert(HuffmanTreeNode* node, char character, int frequency) {
+HuffmanTreeNode* HuffmanTree::insert(HuffmanTreeNode* node, char character, int frequency) {
   if (!node) {
     node = new HuffmanTreeNode(character, frequency);
     _root = node;
   }
-  else {
-    if (frequency < node->frequency) {
-      if (!node->left) {
-        HuffmanTreeNode* temp = new HuffmanTreeNode(character, frequency);
-        node->left = temp;
-      }
-      else {
-        insert(node->right, character, frequency);
-      }
-    }
-    else {
-      if (!node->right) {
-        HuffmanTreeNode* temp = new HuffmanTreeNode(character, frequency);
-        node->right = temp;
-      }
-      else {
-        insert(node, character, frequency);
-      }
-    }
+  else if(frequency < node->frequency) {
+    node->left = insert(node->left, character, frequency);
   }
+  else if (frequency > node->frequency) {
+    node->right = insert(node->right, character, frequency);
+  }
+  return node;
 }
 
 void HuffmanTree::preOrder() {
@@ -41,7 +28,7 @@ void HuffmanTree::preOrder() {
 
 void HuffmanTree::preOrder(const HuffmanTreeNode* node) {
   if (node) {
-		std::cout << node->character << " " << node->frequency; 
+		std::cout << node->character << " " << node->frequency << std::endl; 
 		preOrder(node->left); 
 		preOrder(node->right); 
 	}

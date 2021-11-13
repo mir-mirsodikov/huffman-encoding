@@ -54,27 +54,51 @@ map<wchar_t, int> readFile(string fileName) {
 
 class Compare {
 public:
-  bool operator() (HuffmanTreeNode node1, HuffmanTreeNode node2) {
-    return node1.frequency > node2.frequency; 
+  bool operator() (HuffmanTreeNode* node1, HuffmanTreeNode* node2) {
+    return node1->frequency > node2->frequency; 
   }
 };
 
-int main() {
-  map<wchar_t, int> characterFrequencyCounter = readFile("Pride_and_Prejudice.txt");
-  priority_queue<HuffmanTreeNode, vector<HuffmanTreeNode>, Compare> characterQueue;
-  wcout.imbue(locale("zh_CN.UTF-8"));
-
+HuffmanTreeNode* buildHuffmanTree(const string fileName) {
+  map<wchar_t, int> characterFrequencyCounter = readFile(fileName);
+  priority_queue<HuffmanTreeNode*, vector<HuffmanTreeNode*>, Compare> characterQueue;
+        
   for (auto const &pair : characterFrequencyCounter) {
-    characterQueue.push(HuffmanTreeNode(pair.first, pair.second));
+    characterQueue.push(new HuffmanTreeNode(pair.first, pair.second));
   }
 
   while (characterQueue.size() > 1) {
-    HuffmanTreeNode left = characterQueue.top();
+    HuffmanTreeNode* left = characterQueue.top();
     characterQueue.pop();
-    HuffmanTreeNode right = characterQueue.top();
+    HuffmanTreeNode* right = characterQueue.top();
     characterQueue.pop();
 
-    int frequencySum = left.frequency + right.frequency;
-    characterQueue.push(HuffmanTreeNode(frequencySum, &left, &right));
+    int frequencySum = left->frequency + right->frequency;
+    characterQueue.push(new HuffmanTreeNode(frequencySum, left, right));
+  }
+  return characterQueue.top();
+}
+
+map<wchar_t, string> getHuffmanCodes(HuffmanTreeNode* node, string prefix, map<wchar_t, string>& output) {
+  if (node->isLeaf()) {
+    output[node->character] = prefix;
+  }
+  else {
+    getHuffmanCodes(node->left, prefix + "0", output);
+    getHuffmanCodes(node->right, prefix + "1", output);
+  }
+  return output;
+}
+
+int main() {
+  HuffmanTreeNode* root = buildHuffmanTree("Pride_and_Prejudice.txt");
+  string prefix = "";
+  map<wchar_t, string> output;
+  map<wchar_t, string> huffmanCodes = getHuffmanCodes(root, prefix, output);
+
+  wcout.imbue(locale("zh_CN.UTF-8"));
+  for (auto const &pair : huffmanCodes) {
+    wcout << pair.first << " : ";
+    cout << pair.second << endl;
   }
 }

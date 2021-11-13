@@ -68,8 +68,13 @@ int main() {
     characterQueue.push(HuffmanTreeNode(pair.first, pair.second));
   }
 
-  while (!characterQueue.empty()) {
-    wcout << characterQueue.top().character << ": " << characterQueue.top().frequency << endl;
+  while (characterQueue.size() > 1) {
+    HuffmanTreeNode left = characterQueue.top();
     characterQueue.pop();
+    HuffmanTreeNode right = characterQueue.top();
+    characterQueue.pop();
+
+    int frequencySum = left.frequency + right.frequency;
+    characterQueue.push(HuffmanTreeNode(frequencySum, &left, &right));
   }
 }

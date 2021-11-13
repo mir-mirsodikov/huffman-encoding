@@ -13,4 +13,5 @@ public:
   HuffmanTreeNode* right;
 
   HuffmanTreeNode(wchar_t character, int frequency);
+  HuffmanTreeNode(int frequency, HuffmanTreeNode* left, HuffmanTreeNode* right);
 };

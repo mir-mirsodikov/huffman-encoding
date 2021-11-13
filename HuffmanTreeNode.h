@@ -7,10 +7,10 @@
 
 class HuffmanTreeNode {
 public:
-  char character;
+  wchar_t character;
   int frequency;
   HuffmanTreeNode* left;
   HuffmanTreeNode* right;
 
-  HuffmanTreeNode(char character, int frequency);
+  HuffmanTreeNode(wchar_t character, int frequency);
 };

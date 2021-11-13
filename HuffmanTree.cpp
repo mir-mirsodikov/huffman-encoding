@@ -1,13 +1,13 @@
 #include "HuffmanTree.h"
-#include "iostream"
+#include <iostream> 
 
 HuffmanTree::HuffmanTree() : _root{ nullptr } {}
 
-void HuffmanTree::insert(char character, int frequency) {
+void HuffmanTree::insert(wchar_t character, int frequency) {
   _root = insert(_root, character, frequency);
 }
 
-HuffmanTreeNode* HuffmanTree::insert(HuffmanTreeNode* node, char character, int frequency) {
+HuffmanTreeNode* HuffmanTree::insert(HuffmanTreeNode* node, wchar_t character, int frequency) {
   if (!node) {
     node = new HuffmanTreeNode(character, frequency);
     _root = node;

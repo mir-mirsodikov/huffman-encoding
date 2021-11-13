@@ -23,6 +23,7 @@
 #include <iostream>
 #include <locale>
 #include <queue>
+#include <vector>
 #include "HuffmanTree.h"
 using namespace std;
 
@@ -51,7 +52,24 @@ map<wchar_t, int> readFile(string fileName) {
   return characterFrequencyCounter;
 }
 
+class Compare {
+public:
+  bool operator() (HuffmanTreeNode node1, HuffmanTreeNode node2) {
+    return node1.frequency > node2.frequency; 
+  }
+};
+
 int main() {
   map<wchar_t, int> characterFrequencyCounter = readFile("Pride_and_Prejudice.txt");
+  priority_queue<HuffmanTreeNode, vector<HuffmanTreeNode>, Compare> characterQueue;
   wcout.imbue(locale("zh_CN.UTF-8"));
+
+  for (auto const &pair : characterFrequencyCounter) {
+    characterQueue.push(HuffmanTreeNode(pair.first, pair.second));
+  }
+
+  while (!characterQueue.empty()) {
+    wcout << characterQueue.top().character << ": " << characterQueue.top().frequency << endl;
+    characterQueue.pop();
+  }
 }

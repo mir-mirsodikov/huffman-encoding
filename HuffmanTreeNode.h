@@ -6,12 +6,11 @@
 #pragma once
 
 class HuffmanTreeNode {
-private:
-  char _character;
-  int _frequency;
-  HuffmanTreeNode* _left;
-  HuffmanTreeNode* _right;
-
 public:
-  HuffmanTreeNode(char character);
+  char character;
+  int frequency;
+  HuffmanTreeNode* left;
+  HuffmanTreeNode* right;
+
+  HuffmanTreeNode(char character, int frequency);
 };

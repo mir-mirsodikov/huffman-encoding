@@ -1,4 +1,4 @@
 #include "HuffmanTreeNode.h"
 
-HuffmanTreeNode::HuffmanTreeNode(char character) :
-  _character{ character }, _left{ nullptr }, _right{ nullptr } {}
+HuffmanTreeNode::HuffmanTreeNode(char character, int frequency) :
+  character{ character }, frequency{frequency}, left{ nullptr }, right{ nullptr } {}

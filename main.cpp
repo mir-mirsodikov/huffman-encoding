@@ -17,88 +17,10 @@
  * November 6
  */
 
-#include <map>
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <locale>
-#include <queue>
-#include <vector>
 #include "HuffmanTree.h"
 using namespace std;
 
-map<wchar_t, int> readFile(string fileName);
-
-map<wchar_t, int> readFile(string fileName) {
-  wifstream fileRead;
-  fileRead.imbue(locale("zh_CN.UTF-8"));
-  map<wchar_t, int> characterFrequencyCounter;
-
-  wchar_t fileCharacter;
-
-  fileRead.open(fileName);
-  if (fileRead.is_open()) {
-    while (!fileRead.eof()) {
-      fileRead.get(fileCharacter);
-      if (fileRead.gcount() < 1) break;
-      if (characterFrequencyCounter.count(fileCharacter) != 0) {
-        characterFrequencyCounter.at(fileCharacter) += 1;
-      }
-      else {
-        characterFrequencyCounter.insert(pair<wchar_t, int>(fileCharacter, 1));
-      }
-    }
-  }
-  return characterFrequencyCounter;
-}
-
-class Compare {
-public:
-  bool operator() (HuffmanTreeNode* node1, HuffmanTreeNode* node2) {
-    return node1->frequency > node2->frequency; 
-  }
-};
-
-HuffmanTreeNode* buildHuffmanTree(const string fileName) {
-  map<wchar_t, int> characterFrequencyCounter = readFile(fileName);
-  priority_queue<HuffmanTreeNode*, vector<HuffmanTreeNode*>, Compare> characterQueue;
-        
-  for (auto const &pair : characterFrequencyCounter) {
-    characterQueue.push(new HuffmanTreeNode(pair.first, pair.second));
-  }
-
-  while (characterQueue.size() > 1) {
-    HuffmanTreeNode* left = characterQueue.top();
-    characterQueue.pop();
-    HuffmanTreeNode* right = characterQueue.top();
-    characterQueue.pop();
-
-    int frequencySum = left->frequency + right->frequency;
-    characterQueue.push(new HuffmanTreeNode(frequencySum, left, right));
-  }
-  return characterQueue.top();
-}
-
-map<wchar_t, string> getHuffmanCodes(HuffmanTreeNode* node, string prefix, map<wchar_t, string>& output) {
-  if (node->isLeaf()) {
-    output[node->character] = prefix;
-  }
-  else {
-    getHuffmanCodes(node->left, prefix + "0", output);
-    getHuffmanCodes(node->right, prefix + "1", output);
-  }
-  return output;
-}
-
 int main() {
-  HuffmanTreeNode* root = buildHuffmanTree("Pride_and_Prejudice.txt");
-  string prefix = "";
-  map<wchar_t, string> output;
-  map<wchar_t, string> huffmanCodes = getHuffmanCodes(root, prefix, output);
-
-  wcout.imbue(locale("zh_CN.UTF-8"));
-  for (auto const &pair : huffmanCodes) {
-    wcout << pair.first << " : ";
-    cout << pair.second << endl;
-  }
+  HuffmanTree tree;
+  tree.compress("Pride_and_Prejudice.txt");
 }

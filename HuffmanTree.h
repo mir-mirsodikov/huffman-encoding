@@ -1,14 +1,19 @@
 #pragma once
+#include <map>
+#include <string>
+#include <fstream>
+#include <queue>
+#include <vector>
+#include <locale>
 #include "HuffmanTreeNode.h"
 
 class HuffmanTree {
 private:
-  HuffmanTreeNode* _root;  
-  HuffmanTreeNode* insert(HuffmanTreeNode* node, wchar_t character, int frequency);
-  void preOrder(const HuffmanTreeNode* node);
+  std::map<wchar_t, int> readFile(const std::string fileName);
+  HuffmanTreeNode* buildHuffmanTree(const std::string fileName);
+  std::map<wchar_t, std::string> getHuffmanCodes(HuffmanTreeNode* node, std::string prefix, std::map<wchar_t, std::string>& output);
 public:
-  HuffmanTree();
+  HuffmanTree() = default;
 
-  void insert(wchar_t character, int frequency); 
-  void preOrder();
+  void compress(const std::string fileName);
 };

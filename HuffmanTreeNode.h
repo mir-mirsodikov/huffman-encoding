@@ -5,8 +5,7 @@
 
 #pragma once
 
-class HuffmanTreeNode {
-public:
+struct HuffmanTreeNode {
   wchar_t character;
   int frequency;
   HuffmanTreeNode* left;
